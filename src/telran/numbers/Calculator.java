@@ -4,8 +4,12 @@ import java.util.function.DoubleBinaryOperator;
 
 public class Calculator {
 	private static char[] operations = { '+', '-', '*', '/' };
-	private static DoubleBinaryOperator[] operators = { (a, b) -> a + b, (a, b) -> a - b, (a, b) -> a * b,
-			(a, b) -> a / b };
+	private static DoubleBinaryOperator[] operators = { (a, b) -> a + b, (a, b) -> a - b, (a, b) -> a * b, (a, b) -> {
+		if (b == 0) {
+			throw new ArithmeticException("division on 0");
+		}
+		return a / b;
+	} };
 
 	static public double calculate(CalcData cd) {
 		char operation = cd.getOperation();
@@ -14,6 +18,6 @@ public class Calculator {
 				return operators[i].applyAsDouble(cd.getOp1(), cd.getOp2());
 			}
 		}
-		return 0;
+		throw new UnsupportedOperationException("unsupported operation" + cd.getOperation());
 	}
 }

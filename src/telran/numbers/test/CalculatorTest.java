@@ -19,7 +19,12 @@ class CalculatorTest {
 				(a, b) -> a + b,
 				(a, b) -> a - b,
 				(a, b) -> a * b,
-				(a, b) -> a / b
+				(a, b) -> { 
+					if (b == 0) {
+						throw new ArithmeticException("division on 0");
+					}
+					return a / b;
+				}
 		};
 		Double[] results = {30.0, 10.0, 200.0, 2.0};
 		double op1 = 20;
@@ -32,6 +37,8 @@ class CalculatorTest {
 	@Test
 	void calculateTest() {
 		assertEquals(20, Calculator.calculate(new CalcData(40, 20, '-')));
+		assertThrowsExactly(UnsupportedOperationException.class, () -> Calculator.calculate(new CalcData(40, 20, '&')));
+		assertThrowsExactly(ArithmeticException.class, () -> Calculator.calculate(new CalcData(40, 0, '/')));
 	}
 }
 
